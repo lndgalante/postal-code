@@ -1,0 +1,26 @@
+.ticket {
+  color: #fff;
+  display: flex;
+  background-color: #212121;
+  opacity: 0.9;
+  padding: 10px 40px 10px 10px;
+}
+
+.ticket>ul {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.ticket>ul li {
+  margin-bottom: 10px;
+}
+
+.ticket>ul li p {
+  font-size: 1.4em;
+  text-transform: uppercase;
+}
+
+.ticket>ul li p:first-child {
+  color: #999999;
+  font-size: 1.2em;
+}
