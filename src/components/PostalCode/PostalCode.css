@@ -30,6 +30,6 @@ p {
 
 @media (max-width: 700px) {
     p {
-        font-size: 6em;
+        font-size: 10em;
     }
 }
