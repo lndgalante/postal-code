@@ -13,7 +13,6 @@ export default class PostalCode extends React.Component {
     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
       .then(response => response.json())
       .then(data => { this.setState({ successFetch: true, message: data.address.postcode }) })
-    this.getImageLink()
   }
   getCurrentPosition () {
     if (!navigator.geolocation) {
