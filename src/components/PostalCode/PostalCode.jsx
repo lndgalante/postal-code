@@ -5,38 +5,63 @@ import './PostalCode.css'
 export default class PostalCode extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { successFetch: 'sf', successGeo: 'sg', latitude: 0, longitude: 0, errorMessage: '', postalCode: '' }
+    this.state = {
+      successFetch: 'sf',
+      successGeo: 'sg',
+      latitude: 0,
+      longitude: 0,
+      errorMessage: '',
+      postalCode: ''
+    }
   }
   fetchResults () {
     const lat = this.state.latitude
     const lon = this.state.longitude
     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
       .then(response => response.json())
-      .then(data => { this.setState({ successFetch: true, postalCode: data.address.postcode }) })
+      .then(data => {
+        this.setState({
+          successFetch: true,
+          postalCode: data.address.postcode
+        })
+      })
+  }
+  setMessage (errorMessage) {
+    this.setState({
+      successGeo: false,
+      errorMessage
+    })
   }
   getCurrentPosition () {
     if (!navigator.geolocation) {
-      this.setState({ successGeo: false, errorMessage: 'Geolocation is not compatible' })
+      this.setState({
+        successGeo: false,
+        errorMessage: 'Geolocation is not compatible'
+      })
       return
     }
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.setState({ successGeo: true, latitude: position.coords.latitude, longitude: position.coords.longitude })
+        this.setState({
+          successGeo: true,
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        })
         this.fetchResults()
       },
       error => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            this.setState({ successGeo: false, errorMessage: 'Denied the request for geolocation' })
+            this.setMessage('Denied the request for geolocation')
             break
           case error.POSITION_UNAVAILABLE:
-            this.setState({ successGeo: false, errorMessage: 'Location info unavailable' })
+            this.setMessage('Location info unavailable')
             break
           case error.TIMEOUT:
-            this.setState({ successGeo: false, errorMessage: 'User location request timed out' })
+            this.setMessage('User location request timed out')
             break
           case error.UNKNOWN_ERROR:
-            this.setState({ successGeo: false, errorMessage: 'Unknown error has ocurred' })
+            this.setMessage('Unknown error has ocurred')
             break
           default:
             break
