@@ -2,9 +2,9 @@ import React from 'react'
 import './Ticket.css'
 
 export default class PostalCode extends React.Component {
-  render () {
+  render() {
     return (
-      <div className='container' style={{ backgroundImage: `url(${this.state.imageLink})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+      <div className='container'>
         <div className='ticket'>
           <ul>
             <li>

@@ -5,18 +5,18 @@ import './PostalCode.css'
 export default class PostalCode extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { successFetch: false, successGeo: false, latitude: 0, longitude: 0, message: '' }
+    this.state = { successFetch: 'sf', successGeo: 'sg', latitude: 0, longitude: 0, errorMessage: '', postalCode: '' }
   }
   fetchResults () {
     const lat = this.state.latitude
     const lon = this.state.longitude
     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
       .then(response => response.json())
-      .then(data => { this.setState({ successFetch: true, message: data.address.postcode }) })
+      .then(data => { this.setState({ successFetch: true, postalCode: data.address.postcode }) })
   }
   getCurrentPosition () {
     if (!navigator.geolocation) {
-      this.setState({ message: 'Geolocation is not supported by your browser' })
+      this.setState({ successGeo: false, errorMessage: 'Geolocation is not compatible' })
       return
     }
     navigator.geolocation.getCurrentPosition(
@@ -27,16 +27,16 @@ export default class PostalCode extends React.Component {
       error => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            this.setState({ message: 'Ha negado el uso de la Geolocalización' })
+            this.setState({ successGeo: false, errorMessage: 'Denied the request for geolocation' })
             break
           case error.POSITION_UNAVAILABLE:
-            this.setState({ message: 'Información de su ubicación no esta disponible' })
+            this.setState({ successGeo: false, errorMessage: 'Location info unavailable' })
             break
           case error.TIMEOUT:
-            this.setState({ message: 'La solicitud para obtener la ubicación del usuario se agotó' })
+            this.setState({ successGeo: false, errorMessage: 'User location request timed out' })
             break
           case error.UNKNOWN_ERROR:
-            this.setState({ message: 'Un error desconocido ha ocurrido' })
+            this.setState({ successGeo: false, errorMessage: 'Unknown error has ocurred' })
             break
           default:
             break
@@ -47,7 +47,7 @@ export default class PostalCode extends React.Component {
     this.getCurrentPosition()
   }
   render () {
-    return (this.state.successGeo && this.state.successFetch) ? this.renderResults() : this.renderSpinner()
+    return (this.state.successGeo !== 'sg' || this.state.successFetch !== 'sf') ? this.renderResults() : this.renderSpinner()
   }
   renderSpinner () {
     return (
@@ -59,7 +59,8 @@ export default class PostalCode extends React.Component {
   renderResults () {
     return (
       <div className='container'>
-        <p>{this.state.message}</p>
+        <p className='postalCode'>{this.state.postalCode}</p>
+        <p className='errorMessage'>{this.state.errorMessage}</p>
       </div>
     )
   }
