@@ -6,8 +6,8 @@ export default class PostalCode extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      successFetch: 'sf',
-      successGeo: 'sg',
+      successFetch: '',
+      successGeo: '',
       latitude: 0,
       longitude: 0,
       errorMessage: '',
@@ -20,9 +20,10 @@ export default class PostalCode extends React.Component {
     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
       .then(response => response.json())
       .then(data => {
+        const postalCode = data.address.postcode
         this.setState({
           successFetch: true,
-          postalCode: data.address.postcode
+          postalCode
         })
       })
   }
@@ -34,18 +35,17 @@ export default class PostalCode extends React.Component {
   }
   getCurrentPosition () {
     if (!navigator.geolocation) {
-      this.setState({
-        successGeo: false,
-        errorMessage: 'Geolocation is not compatible'
-      })
+      this.setMessage('Geolocation is not compatible')
       return
     }
     navigator.geolocation.getCurrentPosition(
       position => {
+        const latitude = position.coords.latitude
+        const longitude = position.coords.longitude
         this.setState({
           successGeo: true,
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
+          latitude,
+          longitude
         })
         this.fetchResults()
       },
