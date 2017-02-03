@@ -3,18 +3,18 @@ import Spinner from 'react-spinkit'
 import './PostalCode.css'
 
 export default class PostalCode extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
-      successFetch: '',
-      successGeo: '',
+      successFetch: 'sf',
+      successGeo: 'sg',
       latitude: 0,
       longitude: 0,
       errorMessage: '',
       postalCode: ''
     }
   }
-  fetchResults () {
+  fetchResults() {
     const lat = this.state.latitude
     const lon = this.state.longitude
     fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
@@ -27,13 +27,13 @@ export default class PostalCode extends React.Component {
         })
       })
   }
-  setMessage (errorMessage) {
+  setMessage(errorMessage) {
     this.setState({
       successGeo: false,
       errorMessage
     })
   }
-  getCurrentPosition () {
+  getCurrentPosition() {
     if (!navigator.geolocation) {
       this.setMessage('Geolocation is not compatible')
       return
@@ -68,20 +68,20 @@ export default class PostalCode extends React.Component {
         }
       })
   }
-  componentDidMount () {
+  componentDidMount() {
     this.getCurrentPosition()
   }
-  render () {
+  render() {
     return (this.state.successGeo !== 'sg' || this.state.successFetch !== 'sf') ? this.renderResults() : this.renderSpinner()
   }
-  renderSpinner () {
+  renderSpinner() {
     return (
       <div className='container'>
         <Spinner spinnerName='cube-grid' noFadeIn />
       </div>
     )
   }
-  renderResults () {
+  renderResults() {
     return (
       <div className='container'>
         <p className='postalCode'>{this.state.postalCode}</p>
