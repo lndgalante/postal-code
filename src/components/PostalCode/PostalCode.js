@@ -11,7 +11,7 @@ export default class PostalCode extends React.Component {
       latitude: 0,
       longitude: 0,
       errorMessage: '',
-      postalCode: ''
+      postalCode: '',
     };
   }
   fetchResults() {
@@ -23,14 +23,14 @@ export default class PostalCode extends React.Component {
         const postalCode = data.address.postcode;
         this.setState({
           successFetch: true,
-          postalCode
+          postalCode,
         });
       });
   }
   setMessage(errorMessage) {
     this.setState({
       successGeo: false,
-      errorMessage
+      errorMessage,
     });
   }
   getCurrentPosition() {
@@ -45,7 +45,7 @@ export default class PostalCode extends React.Component {
         this.setState({
           successGeo: true,
           latitude,
-          longitude
+          longitude,
         });
         this.fetchResults();
       },
@@ -66,7 +66,7 @@ export default class PostalCode extends React.Component {
           default:
             break;
         }
-      }
+      },
     );
   }
   componentDidMount() {

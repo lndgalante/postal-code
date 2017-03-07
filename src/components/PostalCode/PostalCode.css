@@ -21,7 +21,7 @@ html {
     text-align: center;
     align-items: center;
     justify-content: center;
-    background-color: #eeeeee;
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
     font-family: 'Source Sans Pro', sans-serif;
 }
 
